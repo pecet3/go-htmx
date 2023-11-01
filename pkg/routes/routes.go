@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -43,19 +42,30 @@ func sendTasks(w http.ResponseWriter) {
 func markTaskDone(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)["id"]
 	id, err := strconv.ParseUint(vars, 10, 64)
-	fmt.Println(id)
+
 	if err != nil {
 		log.Fatal("error during parsing vars: ", err)
 	}
 
 	err = model.MarkDone(id)
 	if err != nil {
-		log.Fatal("error during mark done: ", err)
+		log.Fatal("error during marking done: ", err)
 	}
 	sendTasks(w)
 }
 func deleteTask(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)["id"]
+	id, err := strconv.ParseUint(vars, 10, 64)
 
+	if err != nil {
+		log.Fatal("error during parsing vars: ", err)
+	}
+
+	err = model.DeleteById(id)
+	if err != nil {
+		log.Fatal("error during deleting a task: ", err)
+	}
+	sendTasks(w)
 }
 func createTask(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
