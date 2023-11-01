@@ -17,7 +17,6 @@ func CreateTask(content string) error {
 	_, err := db.Query(statement, content, false)
 
 	if err != nil {
-		log.Fatal("error create task: ", err)
 		return err
 	}
 
@@ -43,7 +42,6 @@ func GetAllTasks() ([]Task, error) {
 		var task Task
 		err := rows.Scan(&task.Id, &task.Task, &task.Done)
 		if err != nil {
-			log.Fatal(err)
 			return nil, err
 		}
 
@@ -61,7 +59,7 @@ func GetTaskById(Id uint64) (Task, error) {
 	row, err := db.Query(statement, Id)
 
 	if err != nil {
-		log.Fatal("error during get taskby id: ", err)
+
 		return task, err
 	}
 
@@ -81,13 +79,13 @@ func MarkDone(Id uint64) error {
 
 	task, err := GetTaskById(Id)
 	if err != nil {
-		log.Fatal("error during mark done: ", err)
+		return err
 
 	}
 
 	_, err = db.Query(statement, Id, !task.Done)
 	if err != nil {
-		log.Fatal("error during mark done: ", err)
+		return err
 	}
 
 	return nil
