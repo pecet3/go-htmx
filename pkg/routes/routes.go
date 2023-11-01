@@ -1,16 +1,40 @@
 package routes
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/pecet3/go+htmx/pkg/model"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
+	todos, err := model.GetAllTasks()
+	if err != nil {
+		log.Fatal("error during get all tasks: ", err)
+	}
+
+	tmp := template.Must(template.ParseFiles("./pkg/templates/index.html"))
+
+	err = tmp.Execute(w, todos)
+	if err != nil {
+		log.Fatal("error executing index.html: ", err)
+	}
 
 }
-func sendTask(w http.ResponseWriter) {
+func sendTasks(w http.ResponseWriter) {
+	todos, err := model.GetAllTasks()
+	if err != nil {
+		log.Fatal("error during get all tasks: ", err)
+	}
+
+	tmp := template.Must(template.ParseFiles("./pkg/templates/index.html"))
+
+	err = tmp.ExecuteTemplate(w, "todos", todos)
+	if err != nil {
+		log.Fatal("error executing index.html: ", err)
+	}
 
 }
 
