@@ -10,8 +10,52 @@
     <title>ToDo list HTMX + GO</title>
 </head> 
 <body class="container max-w-xl mx-auto">
-    <header class="text-center">
-        <h1 class="text-2xl">To Do HTMX + GO!</h1>
+    <header class="text-center mt-2 mb-8">
+        <h1 class="text-3xl">To Do HTMX + GO!</h1>
     </header>
+    <form class="flex gap-4 justify-center">
+        <input type="text" class="input input-bordered" name="task" />
+        <button class="btn btn-accent" 
+        hx-post="/task/create" 
+        hx-target="#todos"
+        hx-swap="innerHTML">
+        Submit
+    </button>
+    </form>
+    <div  class="mt-2 mb-8">
+        
+        <h2 class="text-2xl font-thin">ToDo List</h2>
+
+            <ul class="bg-slate-800 p-2 rounded-md" id="todos">
+                {{block "Todos" . }}
+                {{ range . }}
+                <li class="text-xl flex 
+                justify-between border-b border-slate-600
+                items-center ">
+
+                <p class="p-2 {{if .Done}} line-through {{end}}">{{.Task}}</p>
+
+            <div class="flex gap-2 m-2 text-xl">
+                <button
+                class="btn btn-success hover:opacity-80 duration-300"
+                hx-put="/task/{{.Id}}"
+                hx-target="#todos"
+                hx-swap="innerHTML"
+                >
+                &#10003;
+            </button>
+            <button 
+                class="btn btn-error hover:opacity-80 duration-300"
+                hx-delete="/task/{{.Id}}"
+                hx-target="#todos"
+                hx-swap="innerHTML">
+                &#x2717;
+                </button>
+               </div>
+                </li>
+                {{end}}
+                {{end}}
+            </div>
+    </div>
 </body>
 </html>
