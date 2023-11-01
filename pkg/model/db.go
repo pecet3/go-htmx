@@ -11,7 +11,7 @@ var (
 	db *sql.DB
 )
 
-func ConnectDb() error {
+func ConnectDb() {
 	var err error
 	db, err = sql.Open("postgres", "user=user1 host=localhost port=5432 password=haslo dbname=db1 sslmode=disable")
 	if err != nil {
@@ -22,7 +22,6 @@ func ConnectDb() error {
 	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
-		return err
+		return
 	}
-	return nil
 }
