@@ -9,7 +9,7 @@ import (
 )
 
 func ConnectDb() {
-	db, err := sql.Open("postgres", "host=jakubpacewi.cz, port=5432, password=reksio1, dbname=db1")
+	db, err := sql.Open("postgres", "host=jakubpacewi.cz port=5432 password=reksio1 dbname=db1 sslmode=disable")
 	if err != nil {
 		log.Fatal("error during connection to database")
 
@@ -17,7 +17,7 @@ func ConnectDb() {
 	fmt.Println(db)
 	err = db.Ping()
 	if err != nil {
-		log.Fatal("error during ping database")
+		log.Fatal(err)
 
 	}
 
